@@ -3,7 +3,7 @@
 public class JobResult
 {
     public Guid Id { get; init; } = Guid.NewGuid();
-    public Guid JobId { get; set; }
+    public required Guid JobId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public string? Reason { get; set; }

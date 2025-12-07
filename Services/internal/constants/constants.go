@@ -7,4 +7,5 @@ const (
 
 const (
 	ExchangeFanout = "fanout"
+	RoutingKeyHash = "#"
 )

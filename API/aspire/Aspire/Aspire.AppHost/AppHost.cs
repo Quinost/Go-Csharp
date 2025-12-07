@@ -3,11 +3,10 @@ using Aspire.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var username = builder.AddParameter("username", "guest", secret: true);
-var password = builder.AddParameter("password", "guest", secret: true);
+var rabbitmqcredentials = builder.AddParameter("rabbitmq-credentials");
 
-var rabbitmq = builder.AddRabbitMQ(Constants.RabbitMqName, username, password)
-    .WithManagementPlugin();
+var rabbitmq = builder.AddRabbitMQ(Constants.RabbitMqName, rabbitmqcredentials, rabbitmqcredentials)
+    .WithManagementPlugin(port: 15672);
 
 var postgres = builder.AddPostgres(Constants.PostgresName)
     .WithPgAdmin(c => c.WithHostPort(5050))
@@ -25,8 +24,8 @@ var api = builder.AddProject<Projects.API>(Constants.APIName)
     .WithArgs("--migrate");
 
 var go = builder.AddContainer(Constants.GoWorkerpoolName, Constants.GoWorkerpoolName)
-    .WithDockerfile("../../../../Services", "dockerfile")
-    .WithImageTag("latest")
+    .WithDockerfile("../../../../Services", Constants.Dockerfile)
+    .WithImageTag(Constants.Latest)
     .WaitFor(rabbitmq)
     .WaitFor(api)
     .WithEnvironment("RabbitMq__ConnectionString", rabbitConnectionString)

@@ -101,37 +101,37 @@ func (mr *MessageRouter) AddPublisher(exchangeConfig ExchangeConfig) (message.Pu
 	return publisher, nil
 }
 
-func createSubscriberConfigForQueue(rabbitURL string, qConfig QueueConfig) amqp.Config {
+func createSubscriberConfigForQueue(rabbitURL string, cfg QueueConfig) amqp.Config {
 	config := amqp.NewDurableQueueConfig(rabbitURL)
 
 	config.Exchange = amqp.ExchangeConfig{
 		GenerateName: func(topic string) string {
-			return qConfig.ExchangeName
+			return cfg.ExchangeName
 		},
-		Type:    qConfig.ExchangeType,
-		Durable: qConfig.Durable,
+		Type:    cfg.ExchangeType,
+		Durable: cfg.Durable,
 	}
 
 	config.Queue = amqp.QueueConfig{
 		GenerateName: func(topic string) string {
-			return qConfig.QueueName
+			return cfg.QueueName
 		},
-		Durable: qConfig.Durable,
+		Durable: cfg.Durable,
 	}
 
 	config.QueueBind = amqp.QueueBindConfig{
 		GenerateRoutingKey: func(topic string) string {
-			if qConfig.RoutingKey == "" {
+			if cfg.RoutingKey == "" {
 				return "#"
 			}
-			return qConfig.RoutingKey
+			return cfg.RoutingKey
 		},
 	}
 
 	return config
 }
 
-func createPublisherConfigForExchange(rabbitURL string, eConfig ExchangeConfig) amqp.Config {
+func createPublisherConfigForExchange(rabbitURL string, cfg ExchangeConfig) amqp.Config {
 	config := amqp.Config{
 		Connection: amqp.ConnectionConfig{
 			AmqpURI: rabbitURL,
@@ -145,15 +145,15 @@ func createPublisherConfigForExchange(rabbitURL string, eConfig ExchangeConfig) 
 
 	config.Exchange = amqp.ExchangeConfig{
 		GenerateName: func(topic string) string {
-			return eConfig.ExchangeName
+			return cfg.ExchangeName
 		},
-		Type:    eConfig.ExchangeType,
-		Durable: eConfig.Durable,
+		Type:    cfg.ExchangeType,
+		Durable: cfg.Durable,
 	}
 
 	config.Publish = amqp.PublishConfig{
 		GenerateRoutingKey: func(topic string) string {
-			return eConfig.RoutingKey
+			return cfg.RoutingKey
 		},
 	}
 

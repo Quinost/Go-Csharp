@@ -1,4 +1,4 @@
-package models
+package job_models
 
 import (
 	"time"

@@ -51,6 +51,9 @@ public static class InfrastructureExtensions
 
 internal static class Bus
 {
+    private static readonly string fanout = "fanout";
+    private static readonly string hashtag = "#";
+
     extension(IRabbitMqBusFactoryConfigurator bus)
     {
         public void ConfigureConsumer<TEvent, TConsumer>(IBusRegistrationContext context)
@@ -64,8 +67,8 @@ internal static class Bus
 
                 e.Bind(TEvent.EventName, s =>
                 {
-                    s.ExchangeType = "fanout";
-                    s.RoutingKey = "#";
+                    s.ExchangeType = fanout;
+                    s.RoutingKey = hashtag;
                 });
 
                 e.ConfigureConsumer<TConsumer>(context);
@@ -80,7 +83,7 @@ internal static class Bus
             });
             bus.Publish<TEvent>(pub =>
             {
-                pub.ExchangeType = "fanout";
+                pub.ExchangeType = fanout;
             });
         }
     }

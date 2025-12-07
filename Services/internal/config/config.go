@@ -2,19 +2,12 @@ package config
 
 import (
 	"os"
+	"services/pkg/models"
 
 	"gopkg.in/yaml.v2"
 )
 
-type Config struct {
-	RabbitMq ConnectionCfg `yaml:"rabbitmq"`
-}
-
-type ConnectionCfg struct {
-	ConnectionString string `yaml:"connectionString"`
-}
-
-func Load(path string) (*Config, error) {
+func Load(path string) (*models.Config, error) {
 	f, err := os.Open(path)
 
 	if err != nil {
@@ -23,7 +16,7 @@ func Load(path string) (*Config, error) {
 
 	defer f.Close()
 
-	var cfg Config
+	var cfg models.Config
 	decoder := yaml.NewDecoder(f)
 	err = decoder.Decode(&cfg)
 

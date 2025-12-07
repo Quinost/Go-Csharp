@@ -41,7 +41,7 @@ func main() {
 }
 
 func configureConsumersAndPoblishers(router *router.MessageRouter, workerPool *generic.WorkerPool) error {
-	jobResultPublisher, err := router.AddPublisher(publisher.GetJobResultExchangeConfig())
+	jobResultPublisher, err := router.AddPublisher(publisher.JobResultExchangeConfig())
 	if err != nil {
 		log.Fatal("Failed to add JobResult publisher:", err)
 	}

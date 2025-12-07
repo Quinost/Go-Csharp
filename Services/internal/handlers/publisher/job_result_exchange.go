@@ -5,11 +5,11 @@ import (
 	router "services/internal/infrastructure/messagerouter"
 )
 
-func GetJobResultExchangeConfig() router.ExchangeConfig {
+func JobResultExchangeConfig() router.ExchangeConfig {
 	return router.ExchangeConfig{
 		ExchangeName: constants.JobResultQueue,
 		ExchangeType: constants.ExchangeFanout,
-		RoutingKey:   "#",
+		RoutingKey:   constants.RoutingKeyHash,
 		Durable:      true,
 	}
 }

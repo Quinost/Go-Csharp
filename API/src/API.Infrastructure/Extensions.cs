@@ -2,6 +2,7 @@
 
 using API.Infrastructure.Consumers;
 using API.Infrastructure.Database;
+using API.Infrastructure.Workerpool;
 using API.Shared.Config;
 using API.Shared.Events;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,10 @@ public static class InfrastructureExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, AppConfig cfg)
     {
         Mediator.Extensions.AddMediator(services, Assembly.GetExecutingAssembly());
+
+        services.AddSingleton(sp => new WorkerpoolService(
+            sp.GetRequiredService<IServiceScopeFactory>(),
+            cfg.WorkersCount));
 
         services.AddDbContext<ApiDbContext>(options => options.UseNpgsql(cfg.DatabaseSql.ConnectionString));
 

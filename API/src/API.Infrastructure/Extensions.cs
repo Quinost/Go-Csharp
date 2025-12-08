@@ -1,8 +1,7 @@
 ﻿global using MassTransit;
-
+using API.Infrastructure.BackgroundServices;
 using API.Infrastructure.Consumers;
 using API.Infrastructure.Database;
-using API.Infrastructure.Workerpool;
 using API.Shared.Config;
 using API.Shared.Events;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +16,9 @@ public static class InfrastructureExtensions
     {
         Mediator.Extensions.AddMediator(services, Assembly.GetExecutingAssembly());
 
-        services.AddSingleton(sp => new WorkerpoolService(
-            sp.GetRequiredService<IServiceScopeFactory>(),
-            cfg.WorkersCount));
+        services.AddSingleton<WorkerpoolService>();
+        services.AddHostedService(sp => sp.GetRequiredService<WorkerpoolService>());
+        services.AddSingleton<IWorkerpoolService>(sp => sp.GetRequiredService<WorkerpoolService>());
 
         services.AddDbContext<ApiDbContext>(options => options.UseNpgsql(cfg.DatabaseSql.ConnectionString));
 

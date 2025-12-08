@@ -10,6 +10,8 @@ var cfg = builder.Configuration.Get<AppConfig>() ?? throw new InvalidOperationEx
 
 cfg.Migrate = args.Contains("--migrate");
 
+builder.Services.AddSingleton(cfg);
+
 builder.AddServiceDefaults();
 
 builder.Services.AddInfrastructure(cfg);

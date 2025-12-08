@@ -5,5 +5,5 @@ public class AppConfig(ConnectionStringCfg rabbitMq, ConnectionStringCfg databas
     public ConnectionStringCfg RabbitMq { get; } = rabbitMq;
     public ConnectionStringCfg DatabaseSql { get; } = databaseSql;
     public bool Migrate { get; set; } = false;
-    public int WorkersCount { get; set; } = 20;
+    public int WorkersCount { get; set; } = 8;
 }

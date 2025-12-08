@@ -1,12 +1,12 @@
-﻿using API.Infrastructure.Database;
-using API.Infrastructure.Workerpool;
+﻿using API.Infrastructure.BackgroundServices;
+using API.Infrastructure.Database;
 using API.Shared.Entities;
 using API.Shared.Events;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Infrastructure.Consumers;
 
-public class JobResultConsumer(WorkerpoolService workerpoolService) : IConsumer<JobResultEvent>
+public class JobResultConsumer(IWorkerpoolService workerpoolService) : IConsumer<JobResultEvent>
 {
     public async Task Consume(ConsumeContext<JobResultEvent> context)
     {

@@ -21,7 +21,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	workerPool := generic.NewWorkerPool(2)
+	workerPool := generic.NewWorkerPool(8)
 	workerPool.StartPool(ctx)
 
 	logger := watermill.NewStdLogger(false, false)
